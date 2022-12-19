@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32929.386
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerApps.WorkflowExtensions.Tests", "PowerApps.WorkflowExtensions.Tests\PowerApps.WorkflowExtensions.Tests.csproj", "{00C64A7C-4501-4919-AFFD-32A6FF8517AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerApps.WorkflowExtensions", "PowerApps.WorkflowExtensions\PowerApps.WorkflowExtensions.csproj", "{7221FEAA-75D3-483E-9C20-63083CD4DD68}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00C64A7C-4501-4919-AFFD-32A6FF8517AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00C64A7C-4501-4919-AFFD-32A6FF8517AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00C64A7C-4501-4919-AFFD-32A6FF8517AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00C64A7C-4501-4919-AFFD-32A6FF8517AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7221FEAA-75D3-483E-9C20-63083CD4DD68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7221FEAA-75D3-483E-9C20-63083CD4DD68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7221FEAA-75D3-483E-9C20-63083CD4DD68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7221FEAA-75D3-483E-9C20-63083CD4DD68}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {78E13DD2-E2E1-4B3A-8B00-309EAEFAE3AC}
+	EndGlobalSection
+EndGlobal
