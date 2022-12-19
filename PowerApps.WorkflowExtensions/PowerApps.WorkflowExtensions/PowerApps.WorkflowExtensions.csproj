@@ -105,6 +105,8 @@
     <Compile Include="Maths\SubtractDoubles.cs" />
     <Compile Include="Maths\SubtractIntegers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Text\Contains.cs" />
+    <Compile Include="Text\Replace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

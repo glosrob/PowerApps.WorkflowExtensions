@@ -91,6 +91,7 @@
     <Compile Include="Maths\DoublesTests.cs" />
     <Compile Include="Maths\IntegersTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Text\TextTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
