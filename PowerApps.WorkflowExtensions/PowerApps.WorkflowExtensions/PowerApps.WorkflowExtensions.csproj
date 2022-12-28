@@ -137,6 +137,7 @@
     <Compile Include="Security\ShareWithUser.cs" />
     <Compile Include="Security\UnshareWithTeam.cs" />
     <Compile Include="Security\UnshareWithUser.cs" />
+    <Compile Include="TableGets\TableGetsExtensionSet.cs" />
     <Compile Include="TableUtils\CalculateRollupField.cs" />
     <Compile Include="TableUtils\CloneRecord.cs" />
     <Compile Include="TableUtils\DeleteRecord.cs" />
