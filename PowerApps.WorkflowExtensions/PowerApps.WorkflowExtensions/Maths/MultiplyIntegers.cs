@@ -6,7 +6,7 @@ namespace PowerApps.WorkflowExtensions.Maths
     /// <summary>
     /// Multiplies two integers.
     /// </summary>
-    public class MultiplyIntegers : CodeActivity
+    public class MultiplyIntegers : WorkflowServiceBase
     {
         //Properties
 
@@ -36,12 +36,12 @@ namespace PowerApps.WorkflowExtensions.Maths
         /// Implements the business logic of this class.
         /// </summary>
         /// <param name="context">The context at the time this helper was invoked.</param>
-        protected override void Execute(CodeActivityContext context)
+        public override void ExecuteWf(WorkflowHelper worker)
         {
-            var first = context.GetValue(FirstInteger);
-            var second = context.GetValue(SecondInteger);
-            var result = first * second;
-            Result.Set(context, result);
+            var first = worker.ActivityContext.GetValue(FirstInteger);
+            var second = worker.ActivityContext.GetValue(SecondInteger);
+            var result = worker.Maths.MultiplyIntegers(first, second);
+            Result.Set(worker.ActivityContext, result);
         }
     }
 }

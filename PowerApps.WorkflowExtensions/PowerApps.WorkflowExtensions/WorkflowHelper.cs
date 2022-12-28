@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Workflow;
 using PowerApps.WorkflowExtensions.Calendar;
+using PowerApps.WorkflowExtensions.Maths;
 using System.Activities;
 
 namespace PowerApps.WorkflowExtensions
@@ -26,6 +27,7 @@ namespace PowerApps.WorkflowExtensions
             ActivityContext = context;
 
             Calendar = new CalendarExtensionSet(this);
+            Maths = new MathsExtensionSet(this);
         }
 
         // Services
@@ -39,5 +41,7 @@ namespace PowerApps.WorkflowExtensions
         // Workflows
 
         public CalendarExtensionSet Calendar { get; }
+
+        public MathsExtensionSet Maths { get; }
     }
 }

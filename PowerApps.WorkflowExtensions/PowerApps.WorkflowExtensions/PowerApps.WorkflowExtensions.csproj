@@ -111,6 +111,9 @@
     <Compile Include="Maths\AddDecimals.cs" />
     <Compile Include="Maths\AddDoubles.cs" />
     <Compile Include="Maths\AddIntegers.cs" />
+    <Compile Include="Maths\DivideIntegers.cs" />
+    <Compile Include="Maths\DivideDoubles.cs" />
+    <Compile Include="Maths\MathsExtensionSet.cs" />
     <Compile Include="Maths\DivideDecimals.cs" />
     <Compile Include="Maths\MultiplyDecimals.cs" />
     <Compile Include="Maths\MultiplyDoubles.cs" />

@@ -6,7 +6,7 @@ namespace PowerApps.WorkflowExtensions.Maths
     /// <summary>
     /// Subtracts two decimals.
     /// </summary>
-    public class SubtractDecimals : CodeActivity
+    public class SubtractDecimals : WorkflowServiceBase
     {
         //Properties
 
@@ -36,12 +36,12 @@ namespace PowerApps.WorkflowExtensions.Maths
         /// Implements the business logic of this class.
         /// </summary>
         /// <param name="context">The context at the time this helper was invoked.</param>
-        protected override void Execute(CodeActivityContext context)
+        public override void ExecuteWf(WorkflowHelper worker)
         {
-            var first = context.GetValue(FirstDecimal);
-            var second = context.GetValue(SecondDecimal);
-            var result = first - second;
-            Result.Set(context, result);
+            var first = worker.ActivityContext.GetValue(FirstDecimal);
+            var second = worker.ActivityContext.GetValue(SecondDecimal);
+            var result = worker.Maths.SubtractDecimals(first, second);
+            Result.Set(worker.ActivityContext, result);
         }
     }
 }

@@ -127,6 +127,7 @@
     <Compile Include="Maths\DecimalsTests.cs" />
     <Compile Include="Maths\DoublesTests.cs" />
     <Compile Include="Maths\IntegersTests.cs" />
+    <Compile Include="Maths\MathsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\TextTests.cs" />
     <Compile Include="WorkflowTestBuilder.cs" />

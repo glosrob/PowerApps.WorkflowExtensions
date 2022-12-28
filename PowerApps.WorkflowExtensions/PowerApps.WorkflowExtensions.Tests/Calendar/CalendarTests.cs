@@ -1,11 +1,6 @@
-﻿using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Query;
-using Microsoft.Xrm.Sdk.Workflow;
-using Moq;
-using PowerApps.WorkflowExtensions.Calendar;
+﻿using PowerApps.WorkflowExtensions.Calendar;
 using PowerApps.WorkflowExtensions.Tests;
 using System;
-using System.Activities;
 using System.Collections.Generic;
 using Xunit;
 
