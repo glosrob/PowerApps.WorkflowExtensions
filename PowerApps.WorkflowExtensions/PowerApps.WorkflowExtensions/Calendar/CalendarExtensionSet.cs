@@ -2,6 +2,9 @@
 
 namespace PowerApps.WorkflowExtensions.Calendar
 {
+    /// <summary>
+    /// Workflow extensions for date related operations.
+    /// </summary>
     public class CalendarExtensionSet : BaseExtensionSet
     {
         // Constructors
