@@ -39,8 +39,8 @@ namespace PowerApps.WorkflowExtensions.Calendar
         /// <param name="context">The context at the time this helper was invoked.</param>
         public override void ExecuteWf(WorkflowHelper worker)
         {
-            var firstDate = FirstDate.Get(worker.ActivityContext);
-            var secondDate = SecondDate.Get(worker.ActivityContext);
+            var firstDate = worker.ActivityContext.GetValue(FirstDate);
+            var secondDate = worker.ActivityContext.GetValue(SecondDate);
             var answer = worker.Calendar.DaysBetween(secondDate, firstDate);
             Result.Set(worker.ActivityContext, answer);
         }

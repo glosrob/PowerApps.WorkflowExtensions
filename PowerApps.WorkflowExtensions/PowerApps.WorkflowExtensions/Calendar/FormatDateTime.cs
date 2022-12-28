@@ -38,8 +38,8 @@ namespace PowerApps.WorkflowExtensions.Calendar
         /// <param name="worker">Helper for accessing common workflow services.</param>
         public override void ExecuteWf(WorkflowHelper worker)
         {
-            var format = Format.Get(worker.ActivityContext);
-            var dt = DateTime.Get(worker.ActivityContext);
+            var format = worker.ActivityContext.GetValue(Format);
+            var dt = worker.ActivityContext.GetValue(DateTime);
             var formattedDt = worker.Calendar.FormatDateTime(dt, format);
             FormattedDate.Set(worker.ActivityContext, formattedDt);
         }

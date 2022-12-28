@@ -32,7 +32,7 @@ namespace PowerApps.WorkflowExtensions.Calendar
         /// <param name="context">The context at the time this helper was invoked.</param>
         public override void ExecuteWf(WorkflowHelper worker)
         {
-            var date = Date.Get(worker.ActivityContext);
+            var date = worker.ActivityContext.GetValue(Date);
             var dayWeek = worker.Calendar.DayOfTheWeek(date);
             DayWeek.Set(worker.ActivityContext, dayWeek);
         }

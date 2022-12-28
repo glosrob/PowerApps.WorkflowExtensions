@@ -13,7 +13,7 @@ namespace PowerApps.WorkflowExtensions.Calendar
         /// Default constructor.
         /// </summary>
         /// <param name="worker">The worker for this collection of workflow extensions.</param>
-        public CalendarExtensionSet(WorkflowHelper worker): base(worker)
+        public CalendarExtensionSet(WorkflowHelper worker) : base(worker)
         {
 
         }
@@ -159,6 +159,5 @@ namespace PowerApps.WorkflowExtensions.Calendar
         {
             return Enum.GetName(typeof(DayOfWeek), date.DayOfWeek);
         }
-
     }
 }

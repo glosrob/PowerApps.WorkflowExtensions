@@ -31,7 +31,7 @@ namespace PowerApps.WorkflowExtensions.Calendar
         /// <param name="context">The context at the time this helper was invoked.</param>
         public override void ExecuteWf(WorkflowHelper worker)
         {
-            var duration = Duration.Get(worker.ActivityContext);
+            var duration = worker.ActivityContext.GetValue(Duration);
             var result = worker.Calendar.ConvertMinsToHours(duration);
             Hours.Set(worker.ActivityContext, result);
         }

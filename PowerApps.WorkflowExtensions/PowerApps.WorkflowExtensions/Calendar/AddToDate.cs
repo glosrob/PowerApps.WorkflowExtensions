@@ -46,9 +46,9 @@ namespace PowerApps.WorkflowExtensions.Calendar
         /// <param name="context">The context at the time this helper was invoked.</param>
         public override void ExecuteWf(WorkflowHelper worker)
         {
-            var dt = DateTime.Get(worker.ActivityContext);
-            var unit = Unit.Get(worker.ActivityContext);
-            var amount = Amount.Get(worker.ActivityContext);
+            var dt = worker.ActivityContext.GetValue(DateTime);
+            var unit = worker.ActivityContext.GetValue(Unit);
+            var amount = worker.ActivityContext.GetValue(Amount);
 
             var newDt = worker.Calendar.AddToDate(dt, unit, amount);
             NewDateTime.Set(worker.ActivityContext, newDt);
