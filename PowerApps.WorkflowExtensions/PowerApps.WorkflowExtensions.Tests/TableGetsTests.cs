@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xrm.Sdk;
 using PowerApps.WorkflowExtensions.TableGets;
-using PowerApps.WorkflowExtensions.Tests;
 using System.Collections.Generic;
 using Xunit;
 
-namespace PowerApps.WorkfowExtensionsTests
+namespace PowerApps.WorkflowExtensions.Tests
 {
     /// <summary>
-    /// Tests the Text helpers.
+    /// Tests the Table Get helpers.
     /// </summary>
     public class TableGetsTests
     {

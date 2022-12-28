@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using PowerApps.WorkflowExtensions.Tests;
-using PowerApps.WorkflowExtensions.Text;
+﻿using PowerApps.WorkflowExtensions.Text;
+using System.Collections.Generic;
 using Xunit;
 
-namespace PowerApps.WorkfowExtensionsTests.Text
+namespace PowerApps.WorkflowExtensions.Tests
 {
     /// <summary>
     /// Tests the Text helpers.

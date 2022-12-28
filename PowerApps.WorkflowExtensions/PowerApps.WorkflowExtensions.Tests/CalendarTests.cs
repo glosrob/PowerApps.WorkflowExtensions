@@ -1,10 +1,9 @@
 ﻿using PowerApps.WorkflowExtensions.Calendar;
-using PowerApps.WorkflowExtensions.Tests;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace PowerApps.WorkfowExtensionsTests
+namespace PowerApps.WorkflowExtensions.Tests
 {
     /// <summary>
     /// Tests the helpers in the calendar namepace.
