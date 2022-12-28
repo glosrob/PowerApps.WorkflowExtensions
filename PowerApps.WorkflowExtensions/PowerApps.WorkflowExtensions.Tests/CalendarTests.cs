@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace PowerApps.WorkfowExtensionsTests.Calendar
+namespace PowerApps.WorkfowExtensionsTests
 {
     /// <summary>
     /// Tests the helpers in the calendar namepace.

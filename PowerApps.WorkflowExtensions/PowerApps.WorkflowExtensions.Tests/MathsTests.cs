@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace PowerApps.WorkflowExtensions.Tests.Maths
+namespace PowerApps.WorkflowExtensions.Tests
 {
     /// <summary>
     /// Tests for the Maths extension helpers.

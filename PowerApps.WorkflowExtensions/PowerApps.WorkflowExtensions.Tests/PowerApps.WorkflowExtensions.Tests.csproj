@@ -123,10 +123,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calendar\CalendarTests.cs" />
-    <Compile Include="Maths\MathsTests.cs" />
+    <Compile Include="CalendarTests.cs" />
+    <Compile Include="MathsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Text\TextTests.cs" />
+    <Compile Include="TableGetsTests.cs" />
+    <Compile Include="TextTests.cs" />
     <Compile Include="WorkflowTestBuilder.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -46,6 +46,27 @@ namespace PowerApps.WorkflowExtensions.Tests
             MockService.Setup(x => x.Retrieve(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<ColumnSet>())).Returns(entity);
         }
 
+        public WorkflowTestBuilder SetupQueryExpressionForEntity(string entityLogicalName, EntityCollection entities)
+        {
+            var query = new QueryExpression(entityLogicalName);
+            MockService
+                .Setup(x => x.RetrieveMultiple(It.Is<QueryExpression>(y => y.EntityName == entityLogicalName)))
+                .Returns(entities);
+            return this;
+        }
+
+        public EntityCollection CollectionFromEntity(string entityLogicalName, string prop, string val)
+        {
+            var queue = new Entity(entityLogicalName, Guid.NewGuid())
+            {
+                Id = Guid.NewGuid()
+            };
+            queue.Attributes.Add(prop, val);
+            var entities = new EntityCollection();
+            entities.Entities.Add(queue);
+            return entities;
+        }
+
         public WorkflowTestBuilder Setup<T>() where T : Activity, new()
         {
             var mockRepo = new MockRepository(MockBehavior.Default);
@@ -53,7 +74,7 @@ namespace PowerApps.WorkflowExtensions.Tests
             MockTrace = mockRepo.Create<ITracingService>();
             MockFactory = mockRepo.Create<IOrganizationServiceFactory>();
             MockService = mockRepo.Create<IOrganizationService>();
-            MockFactory.Setup(x => x.CreateOrganizationService(It.IsAny<Guid>()));
+            MockFactory.Setup(x => x.CreateOrganizationService(It.IsAny<Guid>())).Returns(MockService.Object);
 
             var target = new T();
             Invoker = new WorkflowInvoker(target);
