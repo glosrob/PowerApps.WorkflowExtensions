@@ -143,6 +143,7 @@
     <Compile Include="TableUtils\FetchXMLCount.cs" />
     <Compile Include="TableUtils\GetRecordId.cs" />
     <Compile Include="TableUtils\MergeFields.cs" />
+    <Compile Include="Text\TextExtensionSet.cs" />
     <Compile Include="Text\CharacterCount.cs" />
     <Compile Include="Text\Contains.cs" />
     <Compile Include="Text\Replace.cs" />

@@ -4,9 +4,9 @@ using System.Activities;
 namespace PowerApps.WorkflowExtensions.Text
 {
     /// <summary>
-    /// Replaces all occurences of some text.
+    /// Converts a string to all lowercase.
     /// </summary>
-    public class Replace : WorkflowServiceBase
+    public class ToLower : WorkflowServiceBase
     {
         //Properties
 
@@ -18,21 +18,7 @@ namespace PowerApps.WorkflowExtensions.Text
         public InArgument<string> Source { get; set; }
 
         /// <summary>
-        /// Gets or sets the text to find.
-        /// </summary>
-        [RequiredArgument]
-        [Input("Find")]
-        public InArgument<string> Find { get; set; }
-
-        /// <summary>
-        /// Gets or sets the text to replace the found text with.
-        /// </summary>
-        [RequiredArgument]
-        [Input("ReplaceWith")]
-        public InArgument<string> ReplaceWith { get; set; }
-
-        /// <summary>
-        /// Gets or sets the text with all text replaced.
+        /// Gets or sets the output text.
         /// </summary>
         [Output("Output")]
         public OutArgument<string> Output { get; set; }
@@ -46,9 +32,7 @@ namespace PowerApps.WorkflowExtensions.Text
         public override void ExecuteWf(WorkflowHelper worker)
         {
             var text = worker.ActivityContext.GetValue(Source);
-            var find = worker.ActivityContext.GetValue(Find);
-            var replace = worker.ActivityContext.GetValue(ReplaceWith);
-            var output = worker.Text.Replace(text, find, replace);
+            var output = worker.Text.ToLower(text);
             worker.ActivityContext.SetValue(Output, output);
         }
     }

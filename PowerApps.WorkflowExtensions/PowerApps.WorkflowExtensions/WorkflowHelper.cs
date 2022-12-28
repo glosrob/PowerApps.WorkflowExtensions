@@ -28,6 +28,7 @@ namespace PowerApps.WorkflowExtensions
 
             Calendar = new CalendarExtensionSet(this);
             Maths = new MathsExtensionSet(this);
+            Text = new TextExtensionSet(this);
         }
 
         // Services
@@ -43,5 +44,7 @@ namespace PowerApps.WorkflowExtensions
         public CalendarExtensionSet Calendar { get; }
 
         public MathsExtensionSet Maths { get; }
+
+        public TextExtensionSet Text { get; }
     }
 }

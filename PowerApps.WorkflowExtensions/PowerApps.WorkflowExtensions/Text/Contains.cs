@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xrm.Sdk.Workflow;
 using System.Activities;
 
-namespace PowerApps.WorkflowExtensions.Maths
+namespace PowerApps.WorkflowExtensions.Text
 {
     /// <summary>
     /// Whether text contains certain text.
     /// </summary>
-    public class Contains : CodeActivity
+    public class Contains : WorkflowServiceBase
     {
         //Properties
 
@@ -25,6 +25,12 @@ namespace PowerApps.WorkflowExtensions.Maths
         public InArgument<string> Find { get; set; }
 
         /// <summary>
+        /// Gets or sets whether the to ignore casing.
+        /// </summary>
+        [Input("Ignore Case?")]
+        public InArgument<bool> IgnoreCase { get; set; }
+
+        /// <summary>
         /// Gets or sets whether the source contains the text to find.
         /// </summary>
         [Output("Output")]
@@ -33,14 +39,16 @@ namespace PowerApps.WorkflowExtensions.Maths
         //Methods
 
         /// <summary>
-        /// Implements the business logic of this class.
+        /// Implements the business logic for this workflow step.
         /// </summary>
-        /// <param name="context">The context at the time this helper was invoked.</param>
-        protected override void Execute(CodeActivityContext context)
+        /// <param name="worker">Helper for accessing common workflow services.</param>
+        public override void ExecuteWf(WorkflowHelper worker)
         {
-            var source = context.GetValue(Source);
-            var find = context.GetValue(Find);
-            Output.Set(context, source.Contains(find));
+            var text = worker.ActivityContext.GetValue(Source);
+            var ignore = worker.ActivityContext.GetValue(IgnoreCase);
+            var find = worker.ActivityContext.GetValue(Find);
+            var found = worker.Text.Contains(text, find, ignore);
+            worker.ActivityContext.SetValue(Output, found);
         }
     }
 }
