@@ -1,27 +1,28 @@
 ﻿using Microsoft.Xrm.Sdk.Workflow;
+using System;
 using System.Activities;
 
 namespace PowerApps.WorkflowExtensions.Calendar
 {
     /// <summary>
-    /// Converts a number of minutes to a number of hours.
+    /// Gets the day of the week for a given date.
     /// </summary>
-    public class ConvertMinsToHours : WorkflowServiceBase
+    public class DayOfTheWeek : WorkflowServiceBase
     {
         //Properties
 
         /// <summary>
-        /// Gets or sets the number of minutes.
+        /// Gets or sets the date to find the day of the week for.
         /// </summary>
         [RequiredArgument]
-        [Input("Minutes")]
-        public InArgument<int> Duration { get; set; }
+        [Input("Date")]
+        public InArgument<DateTime> Date { get; set; }
 
         /// <summary>
-        /// Gets or sets the duration as a number of hours.
+        /// Gets or sets the day of the week.
         /// </summary>
-        [Output("Hours")]
-        public OutArgument<decimal> Hours { get; set; }
+        [Output("Day of the Week")]
+        public OutArgument<string> DayWeek { get; set; }
 
         //Methods
 
@@ -31,9 +32,9 @@ namespace PowerApps.WorkflowExtensions.Calendar
         /// <param name="context">The context at the time this helper was invoked.</param>
         public override void ExecuteWf(WorkflowHelper worker)
         {
-            var duration = Duration.Get(worker.ActivityContext);
-            var result = worker.Calendar.ConvertMinsToHours(duration);
-            Hours.Set(worker.ActivityContext, result);
+            var date = Date.Get(worker.ActivityContext);
+            var dayWeek = worker.Calendar.DayOfTheWeek(date);
+            DayWeek.Set(worker.ActivityContext, dayWeek);
         }
     }
 }

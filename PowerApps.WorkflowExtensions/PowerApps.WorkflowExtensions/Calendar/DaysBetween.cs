@@ -7,7 +7,7 @@ namespace PowerApps.WorkflowExtensions.Calendar
     /// <summary>
     /// Returns the number of days between two dates.
     /// </summary>
-    public class DaysBetween : CodeActivity
+    public class DaysBetween : WorkflowServiceBase
     {
         //Properties
 
@@ -37,12 +37,12 @@ namespace PowerApps.WorkflowExtensions.Calendar
         /// Implements the business logic of this class.
         /// </summary>
         /// <param name="context">The context at the time this helper was invoked.</param>
-        protected override void Execute(CodeActivityContext context)
+        public override void ExecuteWf(WorkflowHelper worker)
         {
-            var firstDate = context.GetValue(FirstDate);
-            var secondDate = context.GetValue(SecondDate);
-            var diff = firstDate.Subtract(secondDate);
-            Result.Set(context, Math.Round(diff.TotalDays, 2));
+            var firstDate = FirstDate.Get(worker.ActivityContext);
+            var secondDate = SecondDate.Get(worker.ActivityContext);
+            var answer = worker.Calendar.DaysBetween(secondDate, firstDate);
+            Result.Set(worker.ActivityContext, answer);
         }
     }
 }
