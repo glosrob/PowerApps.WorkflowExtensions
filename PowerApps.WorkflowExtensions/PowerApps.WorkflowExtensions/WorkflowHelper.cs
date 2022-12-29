@@ -3,6 +3,7 @@ using Microsoft.Xrm.Sdk.Workflow;
 using PowerApps.WorkflowExtensions.Calendar;
 using PowerApps.WorkflowExtensions.Maths;
 using PowerApps.WorkflowExtensions.TableGets;
+using PowerApps.WorkflowExtensions.TableUtils;
 using System.Activities;
 
 namespace PowerApps.WorkflowExtensions
@@ -31,6 +32,7 @@ namespace PowerApps.WorkflowExtensions
             Maths = new MathsExtensionSet(this);
             Text = new TextExtensionSet(this);
             TableGet = new TableGetsExtensionSet(this);
+            TableUtils = new TableUtilsExtensionSet(this);
         }
 
         // Services
@@ -54,5 +56,7 @@ namespace PowerApps.WorkflowExtensions
         public TextExtensionSet Text { get; }
 
         public TableGetsExtensionSet TableGet { get; }
+
+        public TableUtilsExtensionSet TableUtils { get; set; }
     }
 }

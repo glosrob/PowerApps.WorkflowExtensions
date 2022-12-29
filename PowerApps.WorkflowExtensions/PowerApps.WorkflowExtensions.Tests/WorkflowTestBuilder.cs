@@ -1,10 +1,12 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using Microsoft.Crm.Sdk.Messages;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk.Workflow;
 using Moq;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PowerApps.WorkflowExtensions.Tests
 {
@@ -26,33 +28,24 @@ namespace PowerApps.WorkflowExtensions.Tests
             return outputs;
         }
 
-        public void SetupRetrieveMultiple(QueryBase query, EntityCollection entities)
+        public Entity BuildEntity(string logicalName, string field, string prop)
         {
-            MockService.Setup(x => x.RetrieveMultiple(query)).Returns(entities);
+            var e = new Entity(logicalName);
+            e.Attributes.Add(field, prop);
+            e.Id = Guid.NewGuid();
+            return e;
         }
 
-        public void SetupRetrieveMultipleGeneric(EntityCollection entities)
+        public Entity BuildEntity(string logicalName, Guid id, Dictionary<string, object> fields)
         {
-            MockService.Setup(x => x.RetrieveMultiple(It.IsAny<QueryBase>())).Returns(entities);
-        }
-
-        public void SetupRetrieve(string logicalName, Guid id, ColumnSet colSet, Entity entity)
-        {
-            MockService.Setup(x => x.Retrieve(logicalName, id, colSet)).Returns(entity);
-        }
-
-        public void SetupRetrieveGeneric(Entity entity)
-        {
-            MockService.Setup(x => x.Retrieve(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<ColumnSet>())).Returns(entity);
-        }
-
-        public WorkflowTestBuilder SetupQueryExpressionForEntity(string entityLogicalName, EntityCollection entities)
-        {
-            var query = new QueryExpression(entityLogicalName);
-            MockService
-                .Setup(x => x.RetrieveMultiple(It.Is<QueryExpression>(y => y.EntityName == entityLogicalName)))
-                .Returns(entities);
-            return this;
+            var e = new Entity(logicalName);
+            foreach (var attr in fields)
+            {
+                e.Attributes.Add(attr.Key, attr.Value);
+                e.FormattedValues.Add(attr.Key, attr.Value.ToString());
+            }
+            e.Id = id == Guid.Empty ? Guid.NewGuid() : id;
+            return e;
         }
 
         public EntityCollection CollectionFromEntity(string entityLogicalName, string prop, string val)
@@ -65,6 +58,61 @@ namespace PowerApps.WorkflowExtensions.Tests
             var entities = new EntityCollection();
             entities.Entities.Add(queue);
             return entities;
+        }
+
+        public WorkflowTestBuilder SetupCreate(string logicalName, Dictionary<string, object> fields)
+        {
+            var ent = new Entity(logicalName);
+            foreach(var f in fields)
+            {
+                ent.Attributes.Add(f.Key, f.Value);
+            }
+            MockService
+                .Setup(x => x.Create(It.Is<Entity>(y => y.LogicalName == logicalName && AttributeCollectionsMatch(y.Attributes, ent.Attributes))))
+                .Returns(ent.Id == Guid.Empty ? Guid.NewGuid() : ent.Id);
+            return this;
+        }
+
+        public WorkflowTestBuilder SetupDelete(string logicalName, Guid entityId)
+        {
+            MockService.Setup(x => x.Delete(logicalName, entityId));
+            return this;
+        }
+
+        public WorkflowTestBuilder SetupRetrieve(string logicalName, Guid id, ColumnSet colSet, Entity entity)
+        {
+            MockService.Setup(x => x.Retrieve(logicalName, id, It.Is<ColumnSet>(y => ColumnSetsMatch(y, colSet))))
+                       .Returns(entity);
+            return this;
+        }
+
+        public WorkflowTestBuilder SetupFetchXMLQuery(string fetch, EntityCollection entities)
+        {
+            var query = new FetchExpression(fetch);
+            MockService
+                .Setup(x => x.RetrieveMultiple(It.Is<FetchExpression>(y => y.Query == fetch)))
+                .Returns(entities);
+            return this;
+        } 
+
+        public WorkflowTestBuilder SetupQueryExpressionForEntity(string entityLogicalName, EntityCollection entities)
+        {
+            var query = new QueryExpression(entityLogicalName);
+            MockService
+                .Setup(x => x.RetrieveMultiple(It.Is<QueryExpression>(y => y.EntityName == entityLogicalName)))
+                .Returns(entities);
+            return this;
+        }
+
+        public WorkflowTestBuilder SetupCalculateRollupRequest(string fieldName, string logicalName, Guid id, OrganizationResponse resp)
+        {
+            MockService.Setup(x => x.Execute(
+                It.Is<CalculateRollupFieldRequest>(y => 
+                    y.Target.Id == id && 
+                    y.Target.LogicalName == logicalName && 
+                    y.FieldName == fieldName)))
+                .Returns(resp);
+            return this;
         }
 
         public WorkflowTestBuilder Setup<T>() where T : Activity, new()
@@ -83,6 +131,75 @@ namespace PowerApps.WorkflowExtensions.Tests
             Invoker.Extensions.Add(() => MockFactory.Object);
 
             return this;
+        }
+
+        public WorkflowTestBuilder VerifyAllService()
+        {
+            MockService.VerifyAll();
+            return this;
+        }
+
+        // Helpers
+
+        private bool AttributeCollectionsMatch(AttributeCollection primary, AttributeCollection secondary)
+        {
+            if (primary.Count != secondary.Count)
+            {
+                return false;
+            }
+
+            foreach(var attr in primary)
+            {
+                var secondaryVal = secondary[attr.Key];
+                var primaryVal = attr.Value;
+
+                if (secondaryVal.GetType() != primaryVal.GetType())
+                {
+                    return false;
+                }
+                else if (primaryVal is EntityReference pEr && secondaryVal is EntityReference sEr)
+                {
+                    if (pEr.Id != sEr.Id || pEr.LogicalName != sEr.LogicalName)
+                    {
+                        return false;
+                    }
+                }
+                else if (primaryVal is OptionSetValue pOs && secondaryVal is OptionSetValue sOs)
+                {
+                    if (pOs.Value != sOs.Value)
+                    {
+                        return false;
+                    }
+                }
+                else if (primaryVal is Money pMon && secondaryVal is Money sMon)
+                {
+                    if (pMon.Value != sMon.Value)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (primaryVal.ToString() != secondaryVal.ToString())
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool ColumnSetsMatch(ColumnSet primary, ColumnSet secondary)
+        {
+            foreach(var col in primary.Columns)
+            {
+                if (!secondary.Columns.Any(x => x == col))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
