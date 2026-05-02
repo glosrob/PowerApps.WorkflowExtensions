@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xrm.Sdk;
 using PowerApps.WorkflowExtensions.TableGets;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -33,7 +34,7 @@ namespace PowerApps.WorkflowExtensions.Tests
         }
 
         [Fact]
-        public void GetQueueByName_Does_Not_Exists()
+        public void GetQueueByName_Does_Not_Exist()
         {
             // Arrange
             var inputs = new Dictionary<string, object>
@@ -76,7 +77,7 @@ namespace PowerApps.WorkflowExtensions.Tests
         }
 
         [Fact]
-        public void GetAccountByName_Does_Not_Exists()
+        public void GetAccountByName_Does_Not_Exist()
         {
             // Arrange
             var inputs = new Dictionary<string, object>
@@ -119,7 +120,7 @@ namespace PowerApps.WorkflowExtensions.Tests
         }
 
         [Fact]
-        public void GetContactByName_Does_Not_Exists()
+        public void GetContactByName_Does_Not_Exist()
         {
             // Arrange
             var inputs = new Dictionary<string, object>
@@ -136,6 +137,96 @@ namespace PowerApps.WorkflowExtensions.Tests
 
             // Assert
             var result = outputs["Contact"] as EntityReference;
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void GetUserByName_Exists()
+        {
+            // Arrange
+            var inputs = new Dictionary<string, object>
+            {
+                { "Name", "Test Name" }
+            };
+            var builder = new WorkflowTestBuilder();
+            var results = builder.CollectionFromEntity("systemuser", "fullname", "Test Name");
+            builder
+                .Setup<GetUserByName>()
+                .SetupQueryExpressionForEntity("systemuser", results);
+
+            // Act
+            var outputs = builder.Invoke(inputs);
+
+            // Assert
+            var result = outputs["User"] as EntityReference;
+            Assert.Equal(results[0].Id, result.Id);
+        }
+
+        [Fact]
+        public void GetUserByName_Does_Not_Exist()
+        {
+            // Arrange
+            var inputs = new Dictionary<string, object>
+            {
+                { "Name", "Does not exist" }
+            };
+            var builder = new WorkflowTestBuilder();
+            builder
+                .Setup<GetUserByName>()
+                .SetupQueryExpressionForEntity("systemuser", new EntityCollection());
+
+            // Act
+            var outputs = builder.Invoke(inputs);
+
+            // Assert
+            var result = outputs["User"] as EntityReference;
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void GetRoleByName_Exists()
+        {
+            // Arrange
+            var builder = new WorkflowTestBuilder();
+            var buRef = new EntityReference("businessunit", Guid.NewGuid());
+            var inputs = new Dictionary<string, object>
+            {
+                { "Name", "Test Role" },
+                { "BusinessUnit", buRef }
+            };
+            var results = builder.CollectionFromEntity("role", "name", "Test Role");
+            builder
+                .Setup<GetRoleByName>()
+                .SetupQueryExpressionForEntity("role", results);
+
+            // Act
+            var outputs = builder.Invoke(inputs);
+
+            // Assert
+            var result = outputs["Role"] as EntityReference;
+            Assert.Equal(results[0].Id, result.Id);
+        }
+
+        [Fact]
+        public void GetRoleByName_Does_Not_Exist()
+        {
+            // Arrange
+            var buRef = new EntityReference("businessunit", Guid.NewGuid());
+            var inputs = new Dictionary<string, object>
+            {
+                { "Name", "Test Role" },
+                { "BusinessUnit", buRef }
+            };
+            var builder = new WorkflowTestBuilder();
+            builder
+                .Setup<GetRoleByName>()
+                .SetupQueryExpressionForEntity("role", new EntityCollection());
+
+            // Act
+            var outputs = builder.Invoke(inputs);
+
+            // Assert
+            var result = outputs["Role"] as EntityReference;
             Assert.Null(result);
         }
 
@@ -162,7 +253,7 @@ namespace PowerApps.WorkflowExtensions.Tests
         }
 
         [Fact]
-        public void GetTeamByName_Does_Not_Exists()
+        public void GetTeamByName_Does_Not_Exist()
         {
             // Arrange
             var inputs = new Dictionary<string, object>

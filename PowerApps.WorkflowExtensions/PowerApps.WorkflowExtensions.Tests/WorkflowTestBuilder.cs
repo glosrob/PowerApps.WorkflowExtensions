@@ -22,13 +22,13 @@ namespace PowerApps.WorkflowExtensions.Tests
 
         // Methods
 
-        public IDictionary<string, object> Invoke(Dictionary<string, object> inputs)
+        internal IDictionary<string, object> Invoke(Dictionary<string, object> inputs)
         {
             var outputs = Invoker.Invoke(inputs);
             return outputs;
         }
 
-        public Entity BuildEntity(string logicalName, string field, string prop)
+        internal Entity BuildEntity(string logicalName, string field, string prop)
         {
             var e = new Entity(logicalName);
             e.Attributes.Add(field, prop);
@@ -36,7 +36,7 @@ namespace PowerApps.WorkflowExtensions.Tests
             return e;
         }
 
-        public Entity BuildEntity(string logicalName, Guid id, Dictionary<string, object> fields)
+        internal Entity BuildEntity(string logicalName, Guid id, Dictionary<string, object> fields)
         {
             var e = new Entity(logicalName);
             foreach (var attr in fields)
@@ -48,7 +48,7 @@ namespace PowerApps.WorkflowExtensions.Tests
             return e;
         }
 
-        public EntityCollection CollectionFromEntity(string entityLogicalName, string prop, string val)
+        internal EntityCollection CollectionFromEntity(string entityLogicalName, string prop, string val)
         {
             var queue = new Entity(entityLogicalName, Guid.NewGuid())
             {
@@ -60,7 +60,33 @@ namespace PowerApps.WorkflowExtensions.Tests
             return entities;
         }
 
-        public WorkflowTestBuilder SetupCreate(string logicalName, Dictionary<string, object> fields)
+        internal WorkflowTestBuilder SetupRemoveUserFromTeamRequest(Entity user, Entity team)
+        {
+            var req = new RemoveMembersTeamRequest
+            {
+                TeamId = team.Id,
+                MemberIds = new Guid[] { user.Id }
+            };
+            MockService
+                .Setup(x => x.Execute(It.Is<RemoveMembersTeamRequest>(y => y.MemberIds[0] == user.Id && y.TeamId == team.Id)))
+                .Returns(new OrganizationResponse());
+            return this;
+        }
+
+        internal WorkflowTestBuilder SetupAddUserToTeamRequest(Entity user, Entity team)
+        {
+            var req = new AddMembersTeamRequest
+            {
+                TeamId = team.Id,
+                MemberIds = new Guid[] { user.Id }
+            };
+            MockService
+                .Setup(x => x.Execute(It.Is<AddMembersTeamRequest>(y => y.MemberIds[0] == user.Id && y.TeamId == team.Id)))
+                .Returns(new OrganizationResponse());
+            return this;
+        }
+
+        internal WorkflowTestBuilder SetupCreate(string logicalName, Dictionary<string, object> fields)
         {
             var ent = new Entity(logicalName);
             foreach(var f in fields)
@@ -73,29 +99,29 @@ namespace PowerApps.WorkflowExtensions.Tests
             return this;
         }
 
-        public WorkflowTestBuilder SetupDelete(string logicalName, Guid entityId)
+        internal WorkflowTestBuilder SetupDelete(string logicalName, Guid entityId)
         {
             MockService.Setup(x => x.Delete(logicalName, entityId));
             return this;
         }
 
-        public WorkflowTestBuilder SetupRetrieve(string logicalName, Guid id, ColumnSet colSet, Entity entity)
+        internal WorkflowTestBuilder SetupRetrieve(string logicalName, Guid id, ColumnSet colSet, Entity entity)
         {
             MockService.Setup(x => x.Retrieve(logicalName, id, It.Is<ColumnSet>(y => ColumnSetsMatch(y, colSet))))
                        .Returns(entity);
             return this;
         }
 
-        public WorkflowTestBuilder SetupFetchXMLQuery(string fetch, EntityCollection entities)
+        internal WorkflowTestBuilder SetupFetchXMLQuery(string fetch, EntityCollection entities)
         {
             var query = new FetchExpression(fetch);
             MockService
                 .Setup(x => x.RetrieveMultiple(It.Is<FetchExpression>(y => y.Query == fetch)))
                 .Returns(entities);
             return this;
-        } 
+        }
 
-        public WorkflowTestBuilder SetupQueryExpressionForEntity(string entityLogicalName, EntityCollection entities)
+        internal WorkflowTestBuilder SetupQueryExpressionForEntity(string entityLogicalName, EntityCollection entities)
         {
             var query = new QueryExpression(entityLogicalName);
             MockService
@@ -104,7 +130,7 @@ namespace PowerApps.WorkflowExtensions.Tests
             return this;
         }
 
-        public WorkflowTestBuilder SetupCalculateRollupRequest(string fieldName, string logicalName, Guid id, OrganizationResponse resp)
+        internal WorkflowTestBuilder SetupCalculateRollupRequest(string fieldName, string logicalName, Guid id, OrganizationResponse resp)
         {
             MockService.Setup(x => x.Execute(
                 It.Is<CalculateRollupFieldRequest>(y => 
@@ -115,7 +141,7 @@ namespace PowerApps.WorkflowExtensions.Tests
             return this;
         }
 
-        public WorkflowTestBuilder Setup<T>() where T : Activity, new()
+        internal WorkflowTestBuilder Setup<T>() where T : Activity, new()
         {
             var mockRepo = new MockRepository(MockBehavior.Default);
             MockWorkflowContext = mockRepo.Create<IWorkflowContext>();
@@ -133,7 +159,7 @@ namespace PowerApps.WorkflowExtensions.Tests
             return this;
         }
 
-        public WorkflowTestBuilder VerifyAllService()
+        internal WorkflowTestBuilder VerifyAllService()
         {
             MockService.VerifyAll();
             return this;

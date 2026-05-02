@@ -128,6 +128,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableUtilsTests.cs" />
     <Compile Include="TableGetsTests.cs" />
+    <Compile Include="SecurityTests.cs" />
     <Compile Include="TextTests.cs" />
     <Compile Include="WorkflowTestBuilder.cs" />
   </ItemGroup>
